@@ -1,1 +1,32 @@
+#!/bin/bash
+
+# Fonction pour vérifier la réponse de l'utilisateur
+function check_guess {
+    local guess=$1
+    if [[ $guess -lt $file_count ]]; then
+        echo "Trop bas ! Essayez encore."
+    elif [[ $guess -gt $file_count ]]; then
+        echo "Trop haut ! Essayez encore."
+    else
+        echo "Félicitations ! Vous avez trouvé le bon nombre de fichiers."
+        return 0
+    fi
+    return 1
+}
+
+# Nombre de fichiers dans le répertoire actuel
+file_count=$(ls -1 | wc -l)
+
+echo "Combien de fichiers se trouvent dans le répertoire actuel ?"
+while true; do
+    read -p "Votre réponse : " user_guess
+    if [[ $user_guess =~ ^[0-9]+$ ]]; then
+        check_guess $user_guess
+        if [[ $? -eq 0 ]]; then
+            break
+        fi
+    else
+        echo "Veuillez entrer un nombre entier positif."
+    fi
+done
 
